@@ -13,7 +13,10 @@ import java.util.List;
 @Dao
 public interface SpecialistDao {
     @Query("SELECT * FROM specialists_entity")
-    LiveData<List<SpecialistEntity>> getFeedList();
+    LiveData<List<SpecialistEntity>> getSpecialistLiveData();
+
+    @Query("SELECT * FROM specialists_entity")
+    List<SpecialistEntity> getSpecialisyList();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSpecialityEntity(SpecialistEntity pinEntity);

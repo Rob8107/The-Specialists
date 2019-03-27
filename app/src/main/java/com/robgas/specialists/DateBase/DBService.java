@@ -3,12 +3,15 @@ package com.robgas.specialists.DateBase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
+import com.robgas.specialists.DateBase.Converters.SpecialistsConverter;
 import com.robgas.specialists.DateBase.Dao.SpecialistDao;
 import com.robgas.specialists.DateBase.Entity.SpecialistEntity;
 
 @Database(entities = {SpecialistEntity.class}, version = 1, exportSchema = false)
+@TypeConverters({SpecialistsConverter.class})
 public abstract class DBService extends RoomDatabase {
     private static DBService INSTANCE = null;
 
@@ -22,6 +25,6 @@ public abstract class DBService extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract SpecialistDao feedDao();
+    public abstract SpecialistDao specialistDao();
 
 }

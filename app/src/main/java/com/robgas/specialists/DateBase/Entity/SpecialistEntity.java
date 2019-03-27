@@ -2,7 +2,6 @@ package com.robgas.specialists.DateBase.Entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -13,14 +12,17 @@ public class SpecialistEntity {
 
     @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "id")
+    String id = "";
+
     @ColumnInfo(name = "birthday")
-    String birthday;
+    String birthday = "";
 
     @ColumnInfo(name = "avatr_url")
     String avatrUrl;
-    @Ignore
-//    @ColumnInfo(name = "specialty")
-            List<SpecialtyEntity> specialty;
+    //    @Ignore
+    @ColumnInfo(name = "specialty")
+    List<SpecialtyEntity> specialty;
 
     @ColumnInfo(name = "l_name")
     String lName;
@@ -68,7 +70,28 @@ public class SpecialistEntity {
         this.fName = fName;
     }
 
-    public class SpecialtyEntity {
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "SpecialistEntity{" +
+                "id='" + id + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", avatrUrl='" + avatrUrl + '\'' +
+                ", specialty=" + specialty +
+                ", lName='" + lName + '\'' +
+                ", fName='" + fName + '\'' +
+                '}';
+    }
+
+    public static class SpecialtyEntity {
         @ColumnInfo(name = "specialty_id")
         int specialtyId;
 
@@ -89,6 +112,14 @@ public class SpecialistEntity {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return "SpecialtyEntity{" +
+                    "specialtyId=" + specialtyId +
+                    ", name='" + name + '\'' +
+                    '}';
         }
     }
 
