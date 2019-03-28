@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.robgas.specialists.R;
-import com.robgas.specialists.Utils.ItemClickListener;
 import com.robgas.specialists.data.Employee;
-import com.robgas.specialists.data.Specialty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +16,15 @@ import java.util.List;
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHolder> {
 
     private List<Employee> mData = new ArrayList<>();
-    private ItemClickListener<Specialty> itemClickListener;
+    private OnItemClickListener itemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.itemClickListener = onItemClickListener;
+    }
 
     public EmployeeAdapter() {
     }
 
-    public void setItemClickListener(ItemClickListener<Specialty> itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
 
     public void setData(List<Employee> mData) {
         this.mData = mData;
@@ -34,18 +33,26 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int pos) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.employee_list_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.employee_list_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int pos) {
         viewHolder.bindTo(mData.get(pos), pos);
+        viewHolder.itemView.setOnClickListener((v) -> {
+            if (itemClickListener != null) {
+                itemClickListener.onItemClickListener(mData.get(pos));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClickListener(Employee employee);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -55,15 +62,15 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title1 = (TextView) itemView.findViewById(R.id.title1);
-            title2 = (TextView) itemView.findViewById(R.id.title2);
-            title3 = (TextView) itemView.findViewById(R.id.title3);
+            title1 = itemView.findViewById(R.id.title1);
+            title2 = itemView.findViewById(R.id.title2);
+            title3 = itemView.findViewById(R.id.title3);
         }
 
         public void bindTo(Employee item, int pos) {
-            title1.setText(item.firstName + item.lastName);
-            title2.setText(item.birthday);
-            title3.setText(item.specialty.get(0).name);
+            title1.setText(item.getFirstName() + item.getLastName());
+            title2.setText(item.getBirthday());
+            title3.setText(item.getSpecialty().get(0).name);
 
         }
     }

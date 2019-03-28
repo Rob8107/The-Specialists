@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.robgas.specialists.MainActivity;
 import com.robgas.specialists.R;
 import com.robgas.specialists.SpecialistApp;
 import com.robgas.specialists.Utils.DBUtils;
@@ -19,10 +20,10 @@ import com.robgas.specialists.data.Specialty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EmployeeListFragment extends Fragment {
     public static final String EXTRA_SPECIALTY_ID = "EXTRA_SPECIALTY_ID";
-    private RecyclerView recyclerView;
     private EmployeeAdapter employeeAdapter = new EmployeeAdapter();
 
     public static EmployeeListFragment newInstance(int id) {
@@ -41,15 +42,11 @@ public class EmployeeListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.specialty_list);
+        RecyclerView recyclerView = view.findViewById(R.id.specialty_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(employeeAdapter);
-        employeeAdapter.setItemClickListener((item, position) -> {
-            if (getActivity() != null) {
-//                    ((MainActivity) getActivity()).openFragment();
-            }
-        });
+        employeeAdapter.setOnItemClickListener(employee -> ((MainActivity) Objects.requireNonNull(getActivity())).openFragment(DetailsFragment.getInstance(employee), true));
 
         int specialtyId = -1;
         if (getArguments() != null && getArguments().containsKey(EXTRA_SPECIALTY_ID)) {
@@ -64,7 +61,7 @@ public class EmployeeListFragment extends Fragment {
                     List<Employee> data = DBUtils.getSpecialistMapper2(specialistEntities);
                     ArrayList<Employee> employes = new ArrayList<>();
                     for (Employee item : data) {
-                        if (item.specialty.contains(new Specialty(finalSpecialtyId))) {
+                        if (item.getSpecialty().contains(new Specialty(finalSpecialtyId))) {
                             employes.add(item);
                         }
                     }

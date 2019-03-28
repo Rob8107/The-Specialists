@@ -2,16 +2,65 @@ package com.robgas.specialists.data;
 
 import com.robgas.specialists.Utils.ObjectsCompat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Employee {
-    public String id;
-    public String birthday;
-    public String avatrUrl;
-    public List<Specialty> specialty = new ArrayList<>();
-    public String lastName;
-    public String firstName;
+public class Employee implements Serializable {
+    private String id;
+    private String birthday;
+    private String avatrUrl;
+    private List<Specialty> specialty = new ArrayList<>();
+    private String lastName;
+    private String firstName;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getAvatrUrl() {
+        return avatrUrl;
+    }
+
+    public void setAvatrUrl(String avatrUrl) {
+        this.avatrUrl = avatrUrl;
+    }
+
+    public List<Specialty> getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(List<Specialty> specialty) {
+        this.specialty = specialty;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     @Override
     public boolean equals(Object o) {

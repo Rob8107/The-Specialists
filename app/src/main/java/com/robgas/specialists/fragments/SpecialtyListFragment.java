@@ -56,7 +56,7 @@ public class SpecialtyListFragment extends Fragment {
                 HashSet<Specialty> hs = new HashSet<>();
                 List<Employee> employees = DBUtils.getSpecialistMapper2(specialistEntities);
                 for (Employee employee : employees) {
-                    hs.addAll(employee.specialty);
+                    hs.addAll(employee.getSpecialty());
                 }
 
                 ArrayList<Specialty> specialties = new ArrayList<>(hs);

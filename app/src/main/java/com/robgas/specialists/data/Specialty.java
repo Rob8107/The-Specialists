@@ -2,7 +2,9 @@ package com.robgas.specialists.data;
 
 import com.robgas.specialists.Utils.ObjectsCompat;
 
-public class Specialty {
+import java.io.Serializable;
+
+public class Specialty implements Serializable {
     public int id;
     public String name;
 

@@ -44,13 +44,13 @@ public class DBUtils {
     }
 
     // db to response
-    public static Employee getSpecialistMapper2(SpecialistEntity specialtyItem) {
+    private static Employee getSpecialistMapper2(SpecialistEntity specialtyItem) {
         Employee item = new Employee();
-        item.avatrUrl = specialtyItem.getAvatrUrl();
-        item.birthday = specialtyItem.getBirthday();
-        item.firstName = specialtyItem.getFName();
-        item.lastName = specialtyItem.getLName();
-        item.id = specialtyItem.getId();
+        item.setAvatrUrl(specialtyItem.getAvatrUrl());
+        item.setBirthday(specialtyItem.getBirthday());
+        item.setFirstName(specialtyItem.getFName());
+        item.setLastName(specialtyItem.getLName());
+        item.setId(specialtyItem.getId());
 
         ArrayList<Specialty> items = new ArrayList<>();
         List<SpecialistEntity.SpecialtyEntity> specialtyLizst = specialtyItem.getSpecialty();
@@ -63,7 +63,7 @@ public class DBUtils {
             items.add(specialty);
         }
 
-        item.specialty = items;
+        item.setSpecialty(items);
         return item;
     }
 
