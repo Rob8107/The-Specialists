@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 
 public interface ApiInterface {
 
-    @GET("raw/master/testTask.json")
+    @GET("65gb/static/raw/master/testTask.json")
     Call<ResponseFromGitLab> getFeed();
 }

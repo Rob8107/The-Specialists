@@ -1,17 +1,16 @@
 package com.robgas.specialists.Network;
 
-import com.robgas.specialists.SpecialistApp;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    public static final String BASE_URL = "https://gitlab.65apps.com/65gb/static/";
+    public static final String BASE_URL = "https://gitlab.65apps.com/";
     private static Retrofit sRetrofitInstance = null;
     private static ApiInterface sApiInterface = null;
 
@@ -25,26 +24,27 @@ public class RetrofitClient {
             return sRetrofitInstance;
         }
 
-        int cacheSize = 10 * 1024 * 1024; // 10 MB
-        Cache cache = new Cache(SpecialistApp.getApplicationInstance().getCacheDir(), cacheSize);
 
-        OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-        builder.readTimeout(10, TimeUnit.SECONDS);
-        builder.connectTimeout(10, TimeUnit.SECONDS);
-        builder.cache(cache);
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
 
-        OkHttpClient client = builder.build();
+        Gson gson = new GsonBuilder()
+//                .excludeFieldsWithoutExposeAnnotation()
+                .create();
 
         sRetrofitInstance = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
 
         return sRetrofitInstance;
     }
 
-    public static ApiInterface request() {
+    public static ApiInterface restService() {
         if (sApiInterface != null) {
             return sApiInterface;
         }

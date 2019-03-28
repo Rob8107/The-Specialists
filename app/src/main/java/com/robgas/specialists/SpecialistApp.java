@@ -1,9 +1,6 @@
 package com.robgas.specialists;
 
 import android.app.Application;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import com.robgas.specialists.DateBase.DBService;
 import com.robgas.specialists.Network.ApiInterface;
@@ -13,14 +10,8 @@ public class SpecialistApp extends Application {
     private static SpecialistApp instance;
     public DBService appDb;
 
-    public static SpecialistApp getApplicationInstance() {
+    public static SpecialistApp Instance() {
         return instance;
-    }
-
-    public static boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) instance.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     @Override
@@ -30,7 +21,7 @@ public class SpecialistApp extends Application {
         appDb = DBService.getDataBase(instance);
     }
 
-    public ApiInterface getApiInterface() {
-        return RetrofitClient.request();
+    public ApiInterface getRestService() {
+        return RetrofitClient.restService();
     }
 }
