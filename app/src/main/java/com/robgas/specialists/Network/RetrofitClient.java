@@ -2,6 +2,9 @@ package com.robgas.specialists.Network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.robgas.specialists.Utils.DateDeserializer;
+
+import java.util.Date;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -29,15 +32,15 @@ public class RetrofitClient {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logging)
+                .cache(null)
                 .build();
 
-        Gson gson = new GsonBuilder()
-//                .excludeFieldsWithoutExposeAnnotation()
-                .create();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Date.class, new DateDeserializer());
 
         sRetrofitInstance = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(builder.create()))
                 .client(client)
                 .build();
 

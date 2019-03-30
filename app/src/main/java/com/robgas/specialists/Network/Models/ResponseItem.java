@@ -2,6 +2,7 @@ package com.robgas.specialists.Network.Models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.List;
 
 public class ResponseItem {
@@ -10,7 +11,7 @@ public class ResponseItem {
     private transient String id;
 
     @SerializedName("birthday")
-    private String birthday;
+    private Date birthday;
 
     @SerializedName("avatr_url")
     private String avatrUrl;
@@ -24,11 +25,11 @@ public class ResponseItem {
     @SerializedName("f_name")
     private String fName;
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 

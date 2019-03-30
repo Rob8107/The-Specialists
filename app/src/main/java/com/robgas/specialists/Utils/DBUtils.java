@@ -1,6 +1,5 @@
 package com.robgas.specialists.Utils;
 
-
 import com.robgas.specialists.DateBase.Entity.SpecialistEntity;
 import com.robgas.specialists.Network.Models.ResponseItem;
 import com.robgas.specialists.Network.Models.SpecialtyItem;
@@ -8,6 +7,7 @@ import com.robgas.specialists.data.Employee;
 import com.robgas.specialists.data.Specialty;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,11 +16,18 @@ public class DBUtils {
     // response to db
     public static SpecialistEntity getSpecialistMapper(ResponseItem specialtyItem) {
         SpecialistEntity specialistEntity = new SpecialistEntity();
-        specialistEntity.setId(getUUID(specialtyItem.getAvatrUrl() + specialtyItem.getBirthday()));
-        specialistEntity.setBirthday((specialtyItem.getBirthday() == null) ? "" : specialtyItem.getBirthday());
+        specialistEntity.setId(getUUID(specialtyItem.getAvatrUrl() + specialtyItem.getFName() + specialtyItem.getLName()));
+        if (specialtyItem.getBirthday() == null) {
+            specialistEntity.setBirthday("-");
+        } else {
+            Calendar dob = Calendar.getInstance();
+            dob.setTime(specialtyItem.getBirthday());
+            String age = "" + calculateAge(dob.getTimeInMillis());
+            specialistEntity.setBirthday(age + " года");
+        }
         specialistEntity.setAvatrUrl(specialtyItem.getAvatrUrl());
-        specialistEntity.setFName(specialtyItem.getFName());
-        specialistEntity.setLName(specialtyItem.getLName());
+        specialistEntity.setFName(makeFirstLetterCapital(specialtyItem.getFName()));
+        specialistEntity.setLName(makeFirstLetterCapital(specialtyItem.getLName()));
         List<SpecialistEntity.SpecialtyEntity> specialistEntities = new ArrayList<>();
         List<SpecialtyItem> specialtyItems = specialtyItem.getSpecialty();
         for (int i = 0; i < specialtyItems.size(); i++) {
@@ -34,6 +41,23 @@ public class DBUtils {
         return specialistEntity;
     }
 
+    private static String makeFirstLetterCapital(String string) {
+        string = string.toLowerCase();
+        String cap = string.substring(0, 1).toUpperCase() + string.substring(1);
+        return cap;
+    }
+
+    private static int calculateAge(long date) {
+        Calendar dob = Calendar.getInstance();
+        dob.setTimeInMillis(date);
+        Calendar today = Calendar.getInstance();
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH)) {
+            age--;
+        }
+        return age;
+    }
+
     public static List<SpecialistEntity> getSpecialistMapper(List<ResponseItem> specialtyItem) {
         List<SpecialistEntity> specialistEntities = new ArrayList<>();
         for (ResponseItem responseItem : specialtyItem) {
@@ -44,7 +68,7 @@ public class DBUtils {
     }
 
     // db to response
-    private static Employee getSpecialistMapper2(SpecialistEntity specialtyItem) {
+    public static Employee getSpecialistMapper2(SpecialistEntity specialtyItem) {
         Employee item = new Employee();
         item.setAvatrUrl(specialtyItem.getAvatrUrl());
         item.setBirthday(specialtyItem.getBirthday());

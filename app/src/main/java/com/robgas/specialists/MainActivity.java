@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseFromGitLab> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
